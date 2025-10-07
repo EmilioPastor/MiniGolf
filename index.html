@@ -1,0 +1,407 @@
+﻿<!--
+  MiniGolf & FutGolf — Landing + Reservas (v2 sin emojis ni stock)
+  Tech: HTML5 + CSS3 (sin JS). Código simple, responsive y accesible.
+  - Menos “IA vibes”: sin emojis, tono más neutro, iconos SVG simples.
+  - Galería sustituida por mosaico generativo (SVG/CSS) sin imágenes externas.
+-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>GreenShot — Mini‑Golf & Fut‑Golf | Reservas</title>
+  <meta name="description" content="Reserva tu partida de Mini‑Golf o Fut‑Golf. Diseño elegante, rápido y 100% funcional." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;600;800&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0c1110;            /* negro verdoso */
+      --card:#121917;          /* carta oscuro */
+      --ink:#eaf7e9;           /* texto principal */
+      --muted:#b8c8b6;         /* texto suave */
+      --turf-1:#0f3;           /* verde vivo */
+      --turf-2:#1c7;           /* verde medio */
+      --accent:#c8ff00;        /* amarillo lima */
+      --accent-2:#9dff58;      /* lima suave */
+      --radius:18px;
+      --shadow:0 15px 40px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; color:var(--ink); background:radial-gradient(1200px 800px at 10% -10%, #173a1f 0%, transparent 40%),
+             radial-gradient(1200px 800px at 110% 10%, #102f1e 0%, transparent 45%),
+             linear-gradient(180deg, #0a140f 0%, #08100e 100%);
+      font-family:Onest, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans";
+      line-height:1.5;
+    }
+    a{color:var(--accent)}
+    .wrap{max-width:1160px; margin-inline:auto; padding-inline:22px}
+
+    /* Header */
+    header{
+      position:sticky; top:0; z-index:40; backdrop-filter:saturate(1.1) blur(6px);
+      background:color-mix(in oklab, var(--bg) 88%, transparent);
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .nav{display:flex; align-items:center; justify-content:space-between; padding:14px 0}
+    .brand{display:flex; gap:12px; align-items:center; text-decoration:none; color:var(--ink)}
+    .logo{inline-size:36px; aspect-ratio:1; border-radius:10px; background:
+      radial-gradient(40% 40% at 70% 30%, var(--accent) 0 40%, transparent 42%),
+      radial-gradient(52% 52% at 30% 70%, var(--turf-2) 0 45%, transparent 47%),
+      conic-gradient(from 0deg at 50% 50%, #072 0 30%, #0b4 30% 65%, #0a3 65% 100%);
+      box-shadow: 0 6px 18px rgba(100,255,100,.18), inset 0 0 0 2px #152;
+    }
+    .brand b{font-family:Montserrat, Onest, sans-serif; letter-spacing:.3px}
+    .nav a.btn{padding:10px 16px; border-radius:999px; text-decoration:none; color:#062; background:linear-gradient(180deg, var(--accent) 0%, #b9ff3e 100%);
+      font-weight:700; box-shadow:0 10px 20px rgba(180,255,90,.18); border:1px solid #dfff7a}
+    .nav a.btn:hover{transform:translateY(-1px); box-shadow:0 16px 26px rgba(180,255,90,.24)}
+
+    /* Hero */
+    .hero{position:relative; padding:68px 0 40px}
+    .hero .grid{display:grid; grid-template-columns:1.05fr .95fr; gap:36px}
+    .tag{display:inline-flex; gap:8px; align-items:center; padding:8px 12px; border-radius:999px; font-weight:600; color:#031;
+      background:linear-gradient(180deg,#eaffb6,#ceff66); border:1px solid #dfff7a; box-shadow:0 10px 20px rgba(170,255,80,.14)}
+    .h1{font-size:clamp(36px,3.3vw,60px); line-height:1.08; margin:14px 0 10px; font-weight:800; letter-spacing:-.3px}
+    .lead{color:var(--muted); font-size:clamp(16px,1.5vw,20px)}
+    .cta-row{display:flex; gap:12px; margin:22px 0 0}
+    .btn{display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border-radius:14px; border:1px solid #1a3;
+      background:linear-gradient(180deg, #0e3 0%, #0b5 100%); color:#041; font-weight:800; text-decoration:none; box-shadow:0 12px 24px rgba(0,255,120,.16)}
+    .btn:hover{filter:saturate(1.05) brightness(1.03); transform:translateY(-1px)}
+    .btn.ghost{background:transparent; color:var(--ink); border-color:#243; box-shadow:none}
+
+    .hero-card{border-radius:var(--radius); background:linear-gradient(180deg, #0d1915, #0c1513);
+      border:1px solid rgba(255,255,255,.06); box-shadow:var(--shadow); padding:18px}
+    .hero-field{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:8px}
+    .hero-field input,.hero-field select{width:100%; padding:12px 12px; border-radius:12px; border:1px solid #2a3; background:#0b1512; color:var(--ink)}
+    .hero-field label{font-size:12px; color:var(--muted)}
+
+    /* Sections */
+    section{padding:46px 0}
+    .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:18px}
+    .card{background:var(--card); border:1px solid rgba(255,255,255,.06); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow)}
+    .card h3{margin:0 0 6px}
+    .icon{inline-size:28px; aspect-ratio:1; display:inline-grid; place-items:center; border-radius:8px; background:#0a251a; border:1px solid #1d3; margin-right:8px}
+    .icon svg{width:18px; height:18px; opacity:.9}
+    .pill{display:inline-block; padding:6px 10px; border-radius:999px; border:1px solid #274; color:#aef2bd; font-weight:700; font-size:12px}
+
+    /* Mosaic (reemplazo de galería con SVGs generativos) */
+    .mosaic{display:grid; grid-template-columns:2fr 1fr 1fr; gap:12px}
+    .tile{position:relative; border-radius:14px; overflow:hidden; border:1px solid #153; min-height:180px; background:#0e1a16}
+    .tile.large{grid-row:span 2; min-height:380px}
+    .tile svg{position:absolute; inset:0; width:100%; height:100%}
+    .tile h4{position:absolute; left:12px; bottom:10px; margin:0; padding:6px 10px; border-radius:10px; background:rgba(12,24,20,.7); border:1px solid #163; font-size:14px}
+
+    /* Booking */
+    .booking{display:grid; grid-template-columns:1.1fr .9fr; gap:24px}
+    form{background:var(--card); border:1px solid rgba(255,255,255,.06); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow)}
+    fieldset{border:1px dashed #254; border-radius:14px; padding:14px; margin:0 0 14px}
+    legend{padding:0 8px; font-weight:800; color:#bbff6b}
+    label{display:block; font-size:14px; color:var(--muted); margin:8px 0 6px}
+    input, select, textarea{width:100%; padding:12px 12px; border-radius:12px; border:1px solid #2a3; background:#0b1512; color:var(--ink)}
+    input::placeholder, textarea::placeholder{color:#7fa78b}
+    .row{display:grid; grid-template-columns:repeat(2,1fr); gap:12px}
+    .row-3{display:grid; grid-template-columns:repeat(3,1fr); gap:12px}
+    .opt{display:flex; gap:10px; align-items:center; padding:10px 12px; border:1px solid #284; border-radius:12px; background:#0c1814}
+    .opt input{inline-size:18px; block-size:18px}
+
+    .submit{display:flex; gap:12px; align-items:center; justify-content:space-between; margin-top:10px}
+    .price-hint{font-weight:800; color:#b6ff4b}
+    button[type=submit]{cursor:pointer; padding:12px 16px; border-radius:14px; border:1px solid #1a3; background:linear-gradient(180deg, #0e3 0%, #0b5 100%); color:#041; font-weight:900; box-shadow:0 12px 24px rgba(0,255,120,.16)}
+    button[type=submit]:hover{filter:saturate(1.05) brightness(1.03); transform:translateY(-1px)}
+
+    /* Aside */
+    .aside{display:grid; gap:12px}
+    .tip{background:linear-gradient(180deg,#0f221b,#0b1714); border:1px solid #1f3; border-radius:14px; padding:14px}
+    .tip b{color:#caff70}
+    .rules{font-size:14px; color:var(--muted)}
+
+    /* Footer */
+    footer{border-top:1px solid rgba(255,255,255,.06); padding:30px 0 60px; color:var(--muted)}
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero .grid, .booking{grid-template-columns:1fr}
+      .grid-3{grid-template-columns:1fr 1fr}
+      .mosaic{grid-template-columns:1fr 1fr}
+    }
+    @media (max-width: 640px){
+      .grid-3{grid-template-columns:1fr}
+      .row, .row-3{grid-template-columns:1fr}
+      .cta-row{flex-direction:column}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="#inicio" aria-label="GreenShot inicio">
+        <span class="logo" aria-hidden="true"></span>
+        <b>GreenShot</b>
+      </a>
+      <nav aria-label="Principal" class="links" style="display:flex; gap:16px; align-items:center">
+        <a href="#caracteristicas" class="ghost" style="text-decoration:none; color:var(--ink)">Características</a>
+        <a href="#reservar" class="ghost" style="text-decoration:none; color:var(--ink)">Reservar</a>
+        <a href="#contacto" class="btn">Llamar ahora</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="inicio" class="wrap">
+    <!-- HERO -->
+    <section class="hero" aria-labelledby="title">
+      <div class="grid">
+        <div>
+          <span class="tag" aria-hidden="true">Abierto hoy · Mini‑Golf y Fut‑Golf</span>
+          <h1 id="title" class="h1">Diversión en verde. <br/>Reservas claras. <span style="background:linear-gradient(90deg,var(--accent),#84ff3e); -webkit-background-clip:text; background-clip:text; color:transparent">Estilo funcional</span>.</h1>
+          <p class="lead">Pistas para todos los niveles, césped cuidado y horarios flexibles. Reserva tu partida en segundos.</p>
+          <div class="cta-row">
+            <a class="btn" href="#reservar">Reservar ahora</a>
+            <a class="btn ghost" href="#galeria">Ver pistas</a>
+          </div>
+        </div>
+        <div class="hero-card" role="group" aria-label="Reserva rápida">
+          <div class="hero-field">
+            <div>
+              <label for="quick-date">Fecha</label>
+              <input id="quick-date" type="date" required>
+            </div>
+            <div>
+              <label for="quick-time">Hora</label>
+              <input id="quick-time" type="time" required>
+            </div>
+          </div>
+          <div class="hero-field">
+            <div>
+              <label for="quick-players">Jugadores</label>
+              <select id="quick-players" required>
+                <option value="" disabled selected>Selecciona</option>
+                <option>1</option><option>2</option><option>3</option><option>4</option>
+                <option>5</option><option>6</option><option>7</option><option>8</option>
+              </select>
+            </div>
+            <div>
+              <label for="quick-game">Modalidad</label>
+              <select id="quick-game" required>
+                <option value="" disabled selected>Selecciona</option>
+                <option>Mini‑Golf</option>
+                <option>Fut‑Golf</option>
+              </select>
+            </div>
+          </div>
+          <div class="cta-row" style="margin-top:10px">
+            <a class="btn" href="#reservar" aria-label="Ir al formulario de reserva">Continuar reserva</a>
+            <span class="pill">Desde 8€ por persona</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="caracteristicas">
+      <div class="grid-3">
+        <div class="card">
+          <h3><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.5 6L21 10l-5 4 1.9 6-5.9-3.6L6 20l2-6-5-4 6.5-1z"/></svg></span>Estética y ambiente</h3>
+          <p class="muted">Iluminación discreta, césped premium y una línea visual coherente con el deporte.</p>
+        </div>
+        <div class="card">
+          <h3><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v6l4 2"/></svg></span>Reservas claras</h3>
+          <p class="muted">Horarios visibles, confirmación por email y cambios hasta 24 h antes.</p>
+        </div>
+        <div class="card">
+          <h3><span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h18M6 12h12M9 17h6"/></svg></span>Para todos</h3>
+          <p class="muted">Familias, grupos y eventos privados. Material incluido.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- MOSAIC (sin imágenes externas) -->
+    <section id="galeria">
+      <div class="mosaic">
+        <figure class="tile large" aria-label="Pista Volcán">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#0f3"/><stop offset="100%" stop-color="#0a3"/>
+              </linearGradient>
+              <pattern id="p1" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+                <rect width="3" height="6" fill="#0b1f18"/>
+              </pattern>
+            </defs>
+            <rect width="100" height="100" fill="url(#g1)"/>
+            <circle cx="70" cy="30" r="12" fill="#0b1f18" opacity=".9"/>
+            <path d="M0 70 C 30 50, 70 90, 100 60 L100 100 L0 100 Z" fill="url(#p1)"/>
+          </svg>
+          <h4>Pista “Volcán”</h4>
+        </figure>
+        <figure class="tile" aria-label="Túnel LED">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#0c2"/><stop offset="100%" stop-color="#094"/>
+              </linearGradient>
+            </defs>
+            <rect width="100" height="100" fill="url(#g2)"/>
+            <g opacity=".5">
+              <circle cx="10" cy="50" r="2" fill="#c8ff00"/>
+              <circle cx="25" cy="50" r="2" fill="#c8ff00"/>
+              <circle cx="40" cy="50" r="2" fill="#c8ff00"/>
+              <circle cx="55" cy="50" r="2" fill="#c8ff00"/>
+              <circle cx="70" cy="50" r="2" fill="#c8ff00"/>
+              <circle cx="85" cy="50" r="2" fill="#c8ff00"/>
+            </g>
+          </svg>
+          <h4>Túnel LED</h4>
+        </figure>
+        <figure class="tile" aria-label="Curva 8">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <rect width="100" height="100" fill="#0e1a16"/>
+            <path d="M10 80 C 40 60, 60 40, 90 20" stroke="#9dff58" stroke-width="4" fill="none"/>
+            <path d="M10 70 C 40 50, 60 30, 90 10" stroke="#2cff88" stroke-width="2" fill="none" opacity=".6"/>
+          </svg>
+          <h4>Curva 8</h4>
+        </figure>
+        <figure class="tile" aria-label="Chip 30 m">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <pattern id="grid" width="8" height="8" patternUnits="userSpaceOnUse">
+                <rect width="8" height="8" fill="#0f1a15"/>
+                <path d="M0 0 H8 M0 4 H8 M4 0 V8" stroke="#134" stroke-width=".6"/>
+              </pattern>
+            </defs>
+            <rect width="100" height="100" fill="url(#grid)"/>
+            <circle cx="70" cy="30" r="6" fill="#c8ff00"/>
+          </svg>
+          <h4>Chip 30 m</h4>
+        </figure>
+        <figure class="tile" aria-label="Fut‑Golf 1">
+          <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <rect width="100" height="100" fill="#0e1a16"/>
+            <rect x="12" y="12" width="76" height="76" rx="8" ry="8" stroke="#2cff88" stroke-width="2" fill="none"/>
+            <circle cx="50" cy="50" r="10" stroke="#2cff88" stroke-width="2" fill="none"/>
+          </svg>
+          <h4>Fut‑Golf — Campo 1</h4>
+        </figure>
+      </div>
+    </section>
+
+    <!-- BOOKING -->
+    <section id="reservar" aria-labelledby="reserva-title">
+      <h2 id="reserva-title" class="h1" style="font-size:clamp(28px,2.2vw,40px); margin-bottom:14px">Reserva tu partida</h2>
+      <div class="booking">
+        <form action="#" method="post" novalidate>
+          <fieldset>
+            <legend>Datos de la reserva</legend>
+            <div class="row">
+              <div>
+                <label for="date">Fecha <span aria-hidden="true">*</span></label>
+                <input id="date" name="date" type="date" required>
+              </div>
+              <div>
+                <label for="time">Hora <span aria-hidden="true">*</span></label>
+                <input id="time" name="time" type="time" required>
+              </div>
+            </div>
+            <div class="row">
+              <div>
+                <label for="players">Jugadores <span aria-hidden="true">*</span></label>
+                <select id="players" name="players" required>
+                  <option value="" disabled selected>Selecciona</option>
+                  <option>1</option><option>2</option><option>3</option><option>4</option>
+                  <option>5</option><option>6</option><option>7</option><option>8</option>
+                </select>
+              </div>
+              <div>
+                <label for="course">Recorrido</label>
+                <select id="course" name="course">
+                  <option>9 hoyos</option>
+                  <option>18 hoyos</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="opt" role="group" aria-labelledby="mode-label">
+                <input type="radio" id="mini" name="mode" value="Mini‑Golf" required>
+                <label id="mode-label" for="mini" style="margin:0">Mini‑Golf</label>
+              </div>
+              <div class="opt" role="group" aria-label="Fut‑Golf">
+                <input type="radio" id="fut" name="mode" value="Fut‑Golf" required>
+                <label for="fut" style="margin:0">Fut‑Golf</label>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Extras</legend>
+            <div class="row-3">
+              <label class="opt"><input type="checkbox" name="glow" value="Pelotas Glow"> Pelotas Glow</label>
+              <label class="opt"><input type="checkbox" name="coach" value="Instructor 30 min"> Instructor 30 min</label>
+              <label class="opt"><input type="checkbox" name="party" value="Pack Cumple"> Pack Cumple</label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Contacto</legend>
+            <div class="row">
+              <div>
+                <label for="name">Nombre y apellidos <span aria-hidden="true">*</span></label>
+                <input id="name" name="name" type="text" placeholder="Tu nombre" required>
+              </div>
+              <div>
+                <label for="phone">Teléfono</label>
+                <input id="phone" name="phone" type="tel" placeholder="Opcional">
+              </div>
+            </div>
+            <div class="row">
+              <div>
+                <label for="email">Email <span aria-hidden="true">*</span></label>
+                <input id="email" name="email" type="email" placeholder="tucorreo@ejemplo.com" required>
+              </div>
+              <div>
+                <label for="notes">Notas</label>
+                <input id="notes" name="notes" type="text" placeholder="¿Algo que debamos saber?">
+              </div>
+            </div>
+          </fieldset>
+
+          <div class="submit">
+            <span class="price-hint">Estimación: <span aria-live="polite">desde 8€ / persona</span></span>
+            <button type="submit">Confirmar reserva</button>
+          </div>
+          <p class="rules">Al reservar aceptas las <a href="#">condiciones</a> y la <a href="#">política de cancelación</a> (24 h).</p>
+        </form>
+
+        <aside class="aside">
+          <div class="tip">
+            <b>Consejo:</b> para grupos de 6 o más jugadores, se recomiendan tramos de 18:00–20:00 por menor afluencia.
+          </div>
+          <div class="card">
+            <h3 style="margin:0 0 6px">Horarios de hoy</h3>
+            <p class="muted">10:00–14:00 · 16:00–22:30</p>
+            <div class="pill">Últimas plazas 20:30</div>
+          </div>
+          <div class="card" aria-labelledby="tarifas-title">
+            <h3 id="tarifas-title" style="margin:0 0 6px">Tarifas</h3>
+            <ul style="margin:0; padding-left:18px; color:var(--muted)">
+              <li>Mini‑Golf: 8€ (9 hoyos) · 12€ (18 hoyos)</li>
+              <li>Fut‑Golf: 10€ (9 hoyos) · 14€ (18 hoyos)</li>
+              <li>Extras desde 3€</li>
+            </ul>
+          </div>
+          <div class="card" id="contacto">
+            <h3 style="margin:0 0 6px">Contacto</h3>
+            <p class="muted">Camino Verde s/n · Córdoba<br/>Tel. 600 123 456 · hola@greenshot.es</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>© <span id="y">2025</span> GreenShot — Mini‑Golf & Fut‑Golf.</p>
+    </div>
+  </footer>
+</body>
+</html>
