@@ -1,8 +1,12 @@
-﻿<!--
-  MiniGolf & FutGolf — Landing + Reservas (v2 sin emojis ni stock)
+<!--
+  MiniGolf & FutGolf — Landing + Reservas (v3 mobile-first, única y original)
   Tech: HTML5 + CSS3 (sin JS). Código simple, responsive y accesible.
-  - Menos “IA vibes”: sin emojis, tono más neutro, iconos SVG simples.
-  - Galería sustituida por mosaico generativo (SVG/CSS) sin imágenes externas.
+  Cambios clave:
+  - Mobile‑first real (tipografías fluidas, layout que colapsa con gracia, CTA fija en móvil).
+  - Menú responsive con <details>/<summary> (sin JS).
+  - Inputs optimizados para móvil (16px min, tap targets) y focus‑visible accesible.
+  - Mosaico SVG generativo único (sin imágenes externas) con micro‑animaciones seguras.
+  - Estética refinada y menos “IA vibes”.
 -->
 <!DOCTYPE html>
 <html lang="es">
@@ -26,6 +30,7 @@
       --accent-2:#9dff58;      /* lima suave */
       --radius:18px;
       --shadow:0 15px 40px rgba(0,0,0,.35);
+      --space: clamp(14px, 2vw, 20px);
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -34,10 +39,15 @@
              radial-gradient(1200px 800px at 110% 10%, #102f1e 0%, transparent 45%),
              linear-gradient(180deg, #0a140f 0%, #08100e 100%);
       font-family:Onest, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans";
-      line-height:1.5;
+      line-height:1.5; -webkit-text-size-adjust:100%;
+      -webkit-tap-highlight-color: transparent;
     }
     a{color:var(--accent)}
-    .wrap{max-width:1160px; margin-inline:auto; padding-inline:22px}
+    .wrap{max-width:1200px; margin-inline:auto; padding-inline:22px}
+
+    /* Accesibilidad */
+    :focus-visible{outline:3px solid color-mix(in oklab, var(--accent) 80%, white 20%); outline-offset:2px; border-radius:10px}
+    ::selection{background:color-mix(in oklab, var(--accent) 35%, black 65%); color:#072}
 
     /* Header */
     header{
@@ -45,41 +55,55 @@
       background:color-mix(in oklab, var(--bg) 88%, transparent);
       border-bottom:1px solid rgba(255,255,255,.06);
     }
-    .nav{display:flex; align-items:center; justify-content:space-between; padding:14px 0}
+    .nav{display:flex; align-items:center; justify-content:space-between; padding:12px 0}
     .brand{display:flex; gap:12px; align-items:center; text-decoration:none; color:var(--ink)}
     .logo{inline-size:36px; aspect-ratio:1; border-radius:10px; background:
       radial-gradient(40% 40% at 70% 30%, var(--accent) 0 40%, transparent 42%),
       radial-gradient(52% 52% at 30% 70%, var(--turf-2) 0 45%, transparent 47%),
       conic-gradient(from 0deg at 50% 50%, #072 0 30%, #0b4 30% 65%, #0a3 65% 100%);
       box-shadow: 0 6px 18px rgba(100,255,100,.18), inset 0 0 0 2px #152;
+      position:relative;
     }
-    .brand b{font-family:Montserrat, Onest, sans-serif; letter-spacing:.3px}
+    .logo::after{content:""; position:absolute; inset:auto 6px 6px auto; width:6px; height:14px; background:#c8ff00; border-radius:1px; box-shadow:0 0 0 1px #153; transform:skew(-6deg);}
+    .brand b{font-family:Montserrat, Onest, sans-serif; letter-spacing:.2px}
+    .links{display:flex; gap:16px; align-items:center}
     .nav a.btn{padding:10px 16px; border-radius:999px; text-decoration:none; color:#062; background:linear-gradient(180deg, var(--accent) 0%, #b9ff3e 100%);
       font-weight:700; box-shadow:0 10px 20px rgba(180,255,90,.18); border:1px solid #dfff7a}
     .nav a.btn:hover{transform:translateY(-1px); box-shadow:0 16px 26px rgba(180,255,90,.24)}
 
+    /* Menú móvil sin JS */
+    details.menu{display:none}
+    details.menu summary{list-style:none; cursor:pointer; padding:10px 14px; border:1px solid #1d352a; border-radius:12px}
+    details.menu[open] summary{border-bottom-left-radius:0; border-bottom-right-radius:0}
+    details.menu nav{border:1px solid #1d352a; border-top:0; border-bottom-left-radius:12px; border-bottom-right-radius:12px; padding:10px; margin-top:-4px; background:#0c1613}
+
     /* Hero */
-    .hero{position:relative; padding:68px 0 40px}
-    .hero .grid{display:grid; grid-template-columns:1.05fr .95fr; gap:36px}
+    .hero{position:relative; padding:56px 0 32px}
+    .hero .grid{display:grid; grid-template-columns:1fr; gap:24px}
+    @media (min-width: 860px){.hero .grid{grid-template-columns:1.05fr .95fr; gap:36px}}
+    .divider{position:relative; height:16px; margin-top:10px}
+    .divider::before{content:""; position:absolute; inset:0; background:conic-gradient(from 90deg at 20% 50%, #0a3, #0f3, #0b4, #0a3); filter:blur(18px); opacity:.35}
     .tag{display:inline-flex; gap:8px; align-items:center; padding:8px 12px; border-radius:999px; font-weight:600; color:#031;
       background:linear-gradient(180deg,#eaffb6,#ceff66); border:1px solid #dfff7a; box-shadow:0 10px 20px rgba(170,255,80,.14)}
-    .h1{font-size:clamp(36px,3.3vw,60px); line-height:1.08; margin:14px 0 10px; font-weight:800; letter-spacing:-.3px}
-    .lead{color:var(--muted); font-size:clamp(16px,1.5vw,20px)}
-    .cta-row{display:flex; gap:12px; margin:22px 0 0}
-    .btn{display:inline-flex; align-items:center; gap:10px; padding:12px 16px; border-radius:14px; border:1px solid #1a3;
-      background:linear-gradient(180deg, #0e3 0%, #0b5 100%); color:#041; font-weight:800; text-decoration:none; box-shadow:0 12px 24px rgba(0,255,120,.16)}
+    .h1{font-size:clamp(28px,6vw,60px); line-height:1.06; margin:12px 0 8px; font-weight:800; letter-spacing:-.3px}
+    .lead{color:var(--muted); font-size:clamp(15px,3.5vw,19px)}
+    .cta-row{display:flex; gap:12px; margin:18px 0 0; flex-wrap:wrap}
+    .btn{display:inline-flex; justify-content:center; align-items:center; gap:10px; padding:12px 16px; min-height:44px; min-width:44px; border-radius:14px; border:1px solid #1a3;
+      background:linear-gradient(180deg, #0e3 0%, #0b5 100%); color:#041; font-weight:800; text-decoration:none; box-shadow:0 12px 24px rgba(0,255,120,.16); transition:transform .15s ease}
     .btn:hover{filter:saturate(1.05) brightness(1.03); transform:translateY(-1px)}
     .btn.ghost{background:transparent; color:var(--ink); border-color:#243; box-shadow:none}
 
     .hero-card{border-radius:var(--radius); background:linear-gradient(180deg, #0d1915, #0c1513);
-      border:1px solid rgba(255,255,255,.06); box-shadow:var(--shadow); padding:18px}
-    .hero-field{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:8px}
-    .hero-field input,.hero-field select{width:100%; padding:12px 12px; border-radius:12px; border:1px solid #2a3; background:#0b1512; color:var(--ink)}
+      border:1px solid rgba(255,255,255,.06); box-shadow:var(--shadow); padding:16px}
+    .hero-field{display:grid; grid-template-columns:1fr; gap:12px; margin-top:8px}
+    @media (min-width: 520px){.hero-field{grid-template-columns:1fr 1fr}}
+    .hero-field input,.hero-field select{width:100%; padding:12px 12px; border-radius:12px; border:1px solid #2a3; background:#0b1512; color:var(--ink); font-size:16px}
     .hero-field label{font-size:12px; color:var(--muted)}
 
     /* Sections */
-    section{padding:46px 0}
-    .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:18px}
+    section{padding:40px 0}
+    .grid-3{display:grid; grid-template-columns:1fr; gap:14px}
+    @media (min-width: 820px){.grid-3{grid-template-columns:repeat(3,1fr); gap:18px}}
     .card{background:var(--card); border:1px solid rgba(255,255,255,.06); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow)}
     .card h3{margin:0 0 6px}
     .icon{inline-size:28px; aspect-ratio:1; display:inline-grid; place-items:center; border-radius:8px; background:#0a251a; border:1px solid #1d3; margin-right:8px}
@@ -87,26 +111,39 @@
     .pill{display:inline-block; padding:6px 10px; border-radius:999px; border:1px solid #274; color:#aef2bd; font-weight:700; font-size:12px}
 
     /* Mosaic (reemplazo de galería con SVGs generativos) */
-    .mosaic{display:grid; grid-template-columns:2fr 1fr 1fr; gap:12px}
+    .mosaic{display:grid; grid-template-columns:1fr; gap:12px}
+    @media (min-width: 860px){.mosaic{grid-template-columns:2fr 1fr 1fr}}
     .tile{position:relative; border-radius:14px; overflow:hidden; border:1px solid #153; min-height:180px; background:#0e1a16}
-    .tile.large{grid-row:span 2; min-height:380px}
+    .tile.large{grid-row:span 1; min-height:300px}
+    @media (min-width: 860px){.tile.large{grid-row:span 2; min-height:380px}}
     .tile svg{position:absolute; inset:0; width:100%; height:100%}
     .tile h4{position:absolute; left:12px; bottom:10px; margin:0; padding:6px 10px; border-radius:10px; background:rgba(12,24,20,.7); border:1px solid #163; font-size:14px}
+    .tile:hover h4{background:rgba(20,40,34,.9)}
+
+    /* Micro‑animación opcional */
+    @media (prefers-reduced-motion: no-preference){
+      .tile svg circle{transition:transform .6s ease, opacity .6s ease}
+      .tile:hover svg circle{transform:translateY(-2px); opacity:.95}
+      .btn{transition:transform .15s ease, filter .15s ease}
+    }
 
     /* Booking */
-    .booking{display:grid; grid-template-columns:1.1fr .9fr; gap:24px}
+    .booking{display:grid; grid-template-columns:1fr; gap:20px}
+    @media (min-width: 960px){.booking{grid-template-columns:1.1fr .9fr; gap:24px}}
     form{background:var(--card); border:1px solid rgba(255,255,255,.06); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow)}
     fieldset{border:1px dashed #254; border-radius:14px; padding:14px; margin:0 0 14px}
     legend{padding:0 8px; font-weight:800; color:#bbff6b}
     label{display:block; font-size:14px; color:var(--muted); margin:8px 0 6px}
-    input, select, textarea{width:100%; padding:12px 12px; border-radius:12px; border:1px solid #2a3; background:#0b1512; color:var(--ink)}
+    input, select, textarea{width:100%; padding:12px 12px; border-radius:12px; border:1px solid #2a3; background:#0b1512; color:var(--ink); font-size:16px}
     input::placeholder, textarea::placeholder{color:#7fa78b}
-    .row{display:grid; grid-template-columns:repeat(2,1fr); gap:12px}
-    .row-3{display:grid; grid-template-columns:repeat(3,1fr); gap:12px}
+    .row{display:grid; grid-template-columns:1fr; gap:12px}
+    @media (min-width: 640px){.row{grid-template-columns:repeat(2,1fr)}}
+    .row-3{display:grid; grid-template-columns:1fr}
+    @media (min-width: 680px){.row-3{grid-template-columns:repeat(3,1fr)}}
     .opt{display:flex; gap:10px; align-items:center; padding:10px 12px; border:1px solid #284; border-radius:12px; background:#0c1814}
     .opt input{inline-size:18px; block-size:18px}
 
-    .submit{display:flex; gap:12px; align-items:center; justify-content:space-between; margin-top:10px}
+    .submit{display:flex; gap:12px; align-items:center; justify-content:space-between; margin-top:10px; flex-wrap:wrap}
     .price-hint{font-weight:800; color:#b6ff4b}
     button[type=submit]{cursor:pointer; padding:12px 16px; border-radius:14px; border:1px solid #1a3; background:linear-gradient(180deg, #0e3 0%, #0b5 100%); color:#041; font-weight:900; box-shadow:0 12px 24px rgba(0,255,120,.16)}
     button[type=submit]:hover{filter:saturate(1.05) brightness(1.03); transform:translateY(-1px)}
@@ -118,18 +155,21 @@
     .rules{font-size:14px; color:var(--muted)}
 
     /* Footer */
-    footer{border-top:1px solid rgba(255,255,255,.06); padding:30px 0 60px; color:var(--muted)}
+    footer{border-top:1px solid rgba(255,255,255,.06); padding:30px 0 80px; color:var(--muted)}
 
-    /* Responsive */
-    @media (max-width: 980px){
-      .hero .grid, .booking{grid-template-columns:1fr}
-      .grid-3{grid-template-columns:1fr 1fr}
-      .mosaic{grid-template-columns:1fr 1fr}
+    /* CTA fija en móvil */
+    .mobile-cta{position:fixed; inset:auto 0 0 0; z-index:50; background:linear-gradient(180deg,#0f201a,#0a1512); border-top:1px solid #1f3; display:none}
+    .mobile-cta .wrap{display:flex; gap:10px; padding:10px 16px; align-items:center; justify-content:space-between}
+    .mobile-cta a{flex:1; text-align:center}
+
+    /* Responsive global */
+    @media (max-width: 860px){
+      .links{display:none}
+      details.menu{display:block}
     }
     @media (max-width: 640px){
-      .grid-3{grid-template-columns:1fr}
-      .row, .row-3{grid-template-columns:1fr}
-      .cta-row{flex-direction:column}
+      .cta-row .btn{flex:1}
+      .mobile-cta{display:block}
     }
   </style>
 </head>
@@ -140,11 +180,19 @@
         <span class="logo" aria-hidden="true"></span>
         <b>GreenShot</b>
       </a>
-      <nav aria-label="Principal" class="links" style="display:flex; gap:16px; align-items:center">
+      <nav aria-label="Principal" class="links">
         <a href="#caracteristicas" class="ghost" style="text-decoration:none; color:var(--ink)">Características</a>
         <a href="#reservar" class="ghost" style="text-decoration:none; color:var(--ink)">Reservar</a>
         <a href="#contacto" class="btn">Llamar ahora</a>
       </nav>
+      <details class="menu">
+        <summary>Menú</summary>
+        <nav>
+          <a href="#caracteristicas" style="display:block; padding:8px 6px; text-decoration:none; color:var(--ink)">Características</a>
+          <a href="#reservar" style="display:block; padding:8px 6px; text-decoration:none; color:var(--ink)">Reservar</a>
+          <a href="#contacto" style="display:block; padding:8px 6px; text-decoration:none; color:var(--ink)">Contacto</a>
+        </nav>
+      </details>
     </div>
   </header>
 
@@ -160,6 +208,7 @@
             <a class="btn" href="#reservar">Reservar ahora</a>
             <a class="btn ghost" href="#galeria">Ver pistas</a>
           </div>
+          <div class="divider" aria-hidden="true"></div>
         </div>
         <div class="hero-card" role="group" aria-label="Reserva rápida">
           <div class="hero-field">
@@ -403,5 +452,13 @@
       <p>© <span id="y">2025</span> GreenShot — Mini‑Golf & Fut‑Golf.</p>
     </div>
   </footer>
+
+  <!-- CTA fija en móvil -->
+  <div class="mobile-cta" aria-hidden="true">
+    <div class="wrap">
+      <span style="opacity:.8; font-size:14px">¿Listo para jugar?</span>
+      <a class="btn" href="#reservar">Reservar</a>
+    </div>
+  </div>
 </body>
 </html>
